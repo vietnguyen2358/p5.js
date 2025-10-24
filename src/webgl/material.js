@@ -1194,6 +1194,11 @@ p5.prototype.baseMaterialShader = function() {
   return this._renderer.baseMaterialShader();
 };
 
+p5.prototype.buildMaterialShader = function (callback, context) {
+  this._assert3d('buildMaterialShader');
+  return this.baseMaterialShader().modify(callback, context);
+};
+
 /**
  * Get the shader used by <a href="#/p5/normalMaterial">`normalMaterial()`</a>.
  *
@@ -1289,6 +1294,11 @@ p5.prototype.baseNormalShader = function() {
   return this._renderer.baseNormalShader();
 };
 
+p5.prototype.buildNormalShader = function (callback, context) {
+  this._assert3d('buildNormalShader');
+  return this.baseNormalShader().modify(callback, context);
+};
+
 /**
  * Get the shader used when no lights or materials are applied.
  *
@@ -1350,6 +1360,11 @@ p5.prototype.baseNormalShader = function() {
 p5.prototype.baseColorShader = function() {
   this._assert3d('baseColorShader');
   return this._renderer.baseColorShader();
+};
+
+p5.prototype.buildColorShader = function (callback, context) {
+  this._assert3d('buildColorShader');
+  return this.baseColorShader().modify(callback, context);
 };
 
 /**
@@ -1623,6 +1638,11 @@ p5.prototype.baseColorShader = function() {
 p5.prototype.baseStrokeShader = function() {
   this._assert3d('baseStrokeShader');
   return this._renderer.baseStrokeShader();
+};
+
+p5.prototype.buildStrokeShader = function (callback, context) {
+  this._assert3d('buildStrokeShader');
+  return this.baseStrokeShader().modify(callback, context);
 };
 
 /**
