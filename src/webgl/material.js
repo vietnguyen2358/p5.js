@@ -1194,6 +1194,44 @@ p5.prototype.baseMaterialShader = function() {
   return this._renderer.baseMaterialShader();
 };
 
+/**
+ * Builds a version of the default material shader with custom behavior using shader hooks.
+ *
+ * `buildMaterialShader()` is a simpler alternative to
+ * `baseMaterialShader().modify(callback, context)`. It takes the same parameters—
+ * a callback that defines hook modifications, and an optional context object.
+ *
+ * @method buildMaterialShader
+ * @param  {Function} callback function that defines shader hook modifications.
+ * @param  {Object} [context]  optional context object for captured variables.
+ * @return {p5.Shader}         new shader object built from the material shader.
+ *
+ * @example
+ * <div>
+ * <code>
+ * let myShader;
+ *
+ * function setup() {
+ *   createCanvas(200, 200, WEBGL);
+ *   myShader = buildMaterialShader(hooks => {
+ *     getFinalColor(({ color }) => {
+ *       color.b = min(color.b + 0.25, 1.0);
+ *       return color;
+ *     });
+ *   });
+ * }
+ *
+ * function draw() {
+ *   background(255);
+ *   shader(myShader);
+ *   lights();
+ *   noStroke();
+ *   sphere(50);
+ *   describe('A lit red sphere with a slight blue tint added by the custom shader.');
+ * }
+ * </code>
+ * </div>
+ */
 p5.prototype.buildMaterialShader = function (callback, context) {
   this._assert3d('buildMaterialShader');
   return this.baseMaterialShader().modify(callback, context);
@@ -1294,6 +1332,43 @@ p5.prototype.baseNormalShader = function() {
   return this._renderer.baseNormalShader();
 };
 
+/**
+ * Builds a version of the default normal shader with custom behavior using shader hooks.
+ *
+ * This is equivalent to calling `baseNormalShader().modify(callback, context)`,
+ * but provides a cleaner, bracket-free API.
+ *
+ * @method buildNormalShader
+ * @param  {Function} callback function that defines shader hook modifications.
+ * @param  {Object} [context]  optional context object for captured variables.
+ * @return {p5.Shader}         new shader object built from the normal shader.
+ *
+ * @example
+ * <div>
+ * <code>
+ * let myShader;
+ *
+ * function setup() {
+ *   createCanvas(200, 200, WEBGL);
+ *   myShader = buildNormalShader(hooks => {
+ *     getWorldPosition(({ position }) => {
+ *       position.y += 10.0 * sin(frameCount * 0.02 + position.x * 0.05);
+ *       return position;
+ *     });
+ *   });
+ * }
+ *
+ * function draw() {
+ *   background(220);
+ *   shader(myShader);
+ *   normalMaterial();
+ *   rotateY(frameCount * 0.01);
+ *   box(80);
+ *   describe('A colorful box whose vertices gently oscillate up and down.');
+ * }
+ * </code>
+ * </div>
+ */
 p5.prototype.buildNormalShader = function (callback, context) {
   this._assert3d('buildNormalShader');
   return this.baseNormalShader().modify(callback, context);
@@ -1362,6 +1437,42 @@ p5.prototype.baseColorShader = function() {
   return this._renderer.baseColorShader();
 };
 
+/**
+ * Builds a version of the default color shader with custom behavior using shader hooks.
+ *
+ * This is a shortcut for `baseColorShader().modify(callback, context)`.
+ *
+ * @method buildColorShader
+ * @param  {Function} callback function that defines shader hook modifications.
+ * @param  {Object} [context]  optional context object for captured variables.
+ * @return {p5.Shader}         new shader object built from the color shader.
+ *
+ * @example
+ * <div>
+ * <code>
+ * let myShader;
+ *
+ * function setup() {
+ *   createCanvas(200, 200, WEBGL);
+ *   myShader = buildColorShader(hooks => {
+ *     getFinalColor(({ color }) => {
+ *       color.rg *= vec2(1.2, 0.9);
+ *       return color;
+ *     });
+ *   });
+ * }
+ *
+ * function draw() {
+ *   background(255);
+ *   shader(myShader);
+ *   noStroke();
+ *   fill('orange');
+ *   sphere(50);
+ *   describe('An orange sphere with enhanced red and slightly reduced green tint.');
+ * }
+ * </code>
+ * </div>
+ */
 p5.prototype.buildColorShader = function (callback, context) {
   this._assert3d('buildColorShader');
   return this.baseColorShader().modify(callback, context);
@@ -1640,6 +1751,39 @@ p5.prototype.baseStrokeShader = function() {
   return this._renderer.baseStrokeShader();
 };
 
+/**
+ * Builds a version of the default stroke shader with custom behavior using shader hooks.
+ *
+ * This is equivalent to calling `baseStrokeShader().modify(callback, context)`.
+ *
+ * @method buildStrokeShader
+ * @param  {Function} callback function that defines shader hook modifications.
+ * @param  {Object} [context]  optional context object for captured variables.
+ * @return {p5.Shader}         new shader object built from the stroke shader.
+ *
+ * @example
+ * <div>
+ * <code>
+ * let myShader;
+ *
+ * function setup() {
+ *   createCanvas(200, 200, WEBGL);
+ *   myShader = buildStrokeShader(hooks => {
+ *     getStrokeWeight(w => w * (1.0 + 0.3 * sin(frameCount * 0.05)));
+ *   });
+ * }
+ *
+ * function draw() {
+ *   background(255);
+ *   shader(myShader);
+ *   strokeWeight(10);
+ *   stroke('purple');
+ *   line(-80, 0, 80, 0);
+ *   describe('A purple line whose stroke thickness gently pulsates over time.');
+ * }
+ * </code>
+ * </div>
+ */
 p5.prototype.buildStrokeShader = function (callback, context) {
   this._assert3d('buildStrokeShader');
   return this.baseStrokeShader().modify(callback, context);
